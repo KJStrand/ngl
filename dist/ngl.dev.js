@@ -1,3 +1,9 @@
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.NGL = {})));
+}(this, (function (exports) { 'use strict';
+
 /**
  * @file shims
  * @private
@@ -49600,9 +49606,9 @@ var Log = {
   timeEnd: Function.prototype.bind.call(console.timeEnd, console)
 };
 
-var Debug = boolean(getQuery('debug'));
+exports.Debug = boolean(getQuery('debug'));
 function setDebug (value) {
-  Debug = value;
+  exports.Debug = value;
 }
 
 var WebglErrorMessage = '<div style="display:flex;align-items:center;justify-content:center;height:100%;"><p style="padding:15px;text-align:center;">Your browser/graphics card does not seem to support <a target="_blank" href="https://en.wikipedia.org/wiki/WebGL">WebGL</a>.<br/><br/>Find out how to get it <a target="_blank" href="http://get.webgl.org/">here</a>.</p></div>';
@@ -51779,7 +51785,7 @@ if (typeof window !== 'undefined' && window.WebGLRenderingContext) {
 
   var _getShaderParameter = wrcp.getShaderParameter;
   wrcp.getShaderParameter = function getShaderParameter () {
-    if (Debug) {
+    if (exports.Debug) {
       return _getShaderParameter.apply(this, arguments)
     } else {
       return true
@@ -51788,7 +51794,7 @@ if (typeof window !== 'undefined' && window.WebGLRenderingContext) {
 
   var _getShaderInfoLog = wrcp.getShaderInfoLog;
   wrcp.getShaderInfoLog = function getShaderInfoLog () {
-    if (Debug) {
+    if (exports.Debug) {
       return _getShaderInfoLog.apply(this, arguments)
     } else {
       return ''
@@ -51797,7 +51803,7 @@ if (typeof window !== 'undefined' && window.WebGLRenderingContext) {
 
   var _getProgramParameter = wrcp.getProgramParameter;
   wrcp.getProgramParameter = function getProgramParameter (program, pname) {
-    if (Debug || pname !== wrcp.LINK_STATUS) {
+    if (exports.Debug || pname !== wrcp.LINK_STATUS) {
       return _getProgramParameter.apply(this, arguments)
     } else {
       return true
@@ -51806,7 +51812,7 @@ if (typeof window !== 'undefined' && window.WebGLRenderingContext) {
 
   var _getProgramInfoLog = wrcp.getProgramInfoLog;
   wrcp.getProgramInfoLog = function getProgramInfoLog () {
-    if (Debug) {
+    if (exports.Debug) {
       return _getProgramInfoLog.apply(this, arguments)
     } else {
       return ''
@@ -53111,7 +53117,7 @@ function Viewer (idOrElement, aframeScene) {
       pickingGroup.add(buffer.pickingGroup);
     }
 
-    if (Debug) { updateHelper(); }
+    if (exports.Debug) { updateHelper(); }
 
     // Log.timeEnd( "Viewer.add" );
   }
@@ -53180,7 +53186,7 @@ function Viewer (idOrElement, aframeScene) {
     }
 
     updateBoundingBox();
-    if (Debug) { updateHelper(); }
+    if (exports.Debug) { updateHelper(); }
 
     // requestRender();
   }
@@ -53439,7 +53445,7 @@ function Viewer (idOrElement, aframeScene) {
       render();
       isStill = true;
       sampleLevel = currentSampleLevel;
-      if (Debug) { Log.log('rendered still frame'); }
+      if (exports.Debug) { Log.log('rendered still frame'); }
     }
 
     window.requestAnimationFrame(animate);
@@ -53641,7 +53647,7 @@ function Viewer (idOrElement, aframeScene) {
     }
     updateInfo();
 
-    __setVisibility(true, false, false, Debug);
+    __setVisibility(true, false, false, exports.Debug);
     renderer.render(scene, camera, renderTarget);
     updateInfo();
   }
@@ -53778,7 +53784,7 @@ function Viewer (idOrElement, aframeScene) {
   this.boundingBox = boundingBox;
   this.updateBoundingBox = function () {
     updateBoundingBox();
-    if (Debug) { updateHelper(); }
+    if (exports.Debug) { updateHelper(); }
   };
 
   Object.defineProperties(this, {
@@ -58221,7 +58227,7 @@ function Worker (name) {
     pending -= 1;
     var postId = event.data.__postId;
 
-    if (Debug) { Log.timeEnd('Worker.postMessage ' + name + ' #' + postId); }
+    if (exports.Debug) { Log.timeEnd('Worker.postMessage ' + name + ' #' + postId); }
 
     if (onmessageDict[ postId ]) {
       onmessageDict[ postId ].call(worker, event);
@@ -58260,9 +58266,9 @@ function Worker (name) {
     aMessage = aMessage || {};
     aMessage.__name = name;
     aMessage.__postId = postCount;
-    aMessage.__debug = Debug;
+    aMessage.__debug = exports.Debug;
 
-    if (Debug) { Log.time('Worker.postMessage ' + name + ' #' + postCount); }
+    if (exports.Debug) { Log.time('Worker.postMessage ' + name + ' #' + postCount); }
 
     try {
       worker.postMessage(aMessage, transferList);
@@ -59811,7 +59817,7 @@ Surface.prototype.set = function set (position, index, normal, color, atomindex,
 };
 
 Surface.prototype.fromGeometry = function fromGeometry (geometry) {
-  if (Debug) { Log.time('GeometrySurface.fromGeometry'); }
+  if (exports.Debug) { Log.time('GeometrySurface.fromGeometry'); }
 
   var geo;
 
@@ -59847,7 +59853,7 @@ Surface.prototype.fromGeometry = function fromGeometry (geometry) {
 
   this.set(position, index, normal, color, undefined);
 
-  if (Debug) { Log.timeEnd('GeometrySurface.setGeometry'); }
+  if (exports.Debug) { Log.timeEnd('GeometrySurface.setGeometry'); }
 };
 
 Surface.prototype.getPosition = function getPosition () {
@@ -60538,7 +60544,7 @@ FilteredVolume.prototype.getDataSize = Volume.prototype.getDataSize;
  */
 
 var BondHash = function BondHash (bondStore, atomCount) {
-  if (Debug) { Log.time('BondHash init'); }
+  if (exports.Debug) { Log.time('BondHash init'); }
 
   var bondCount = bondStore.count;
   var atomIndex1Array = bondStore.atomIndex1;
@@ -60580,7 +60586,7 @@ var BondHash = function BondHash (bondStore, atomCount) {
     indexArray[ j2 ] = i$2;
   }
 
-  if (Debug) { Log.timeEnd('BondHash init'); }
+  if (exports.Debug) { Log.timeEnd('BondHash init'); }
 
   this.countArray = countArray;
   this.offsetArray = offsetArray;
@@ -62017,7 +62023,7 @@ function Kdtree$2 (points, metric) {
  */
 
 function Kdtree (entity, useSquaredDist) {
-  if (Debug) { Log.time('Kdtree build'); }
+  if (exports.Debug) { Log.time('Kdtree build'); }
 
   var metric;
 
@@ -62053,7 +62059,7 @@ function Kdtree (entity, useSquaredDist) {
   this.points = points;
   this.kdtree = new Kdtree$2(points, metric);
 
-  if (Debug) { Log.timeEnd('Kdtree build'); }
+  if (exports.Debug) { Log.timeEnd('Kdtree build'); }
 
     // console.log("this.kdtree.verify()", this.kdtree.verify())
 }
@@ -62758,7 +62764,7 @@ Object.defineProperties( AssemblyPart.prototype, prototypeAccessors$1$2 );
 function assignSecondaryStructure (structure, secStruct) {
   if (!secStruct) { return }
 
-  if (Debug) { Log.time('assignSecondaryStructure'); }
+  if (exports.Debug) { Log.time('assignSecondaryStructure'); }
 
   var chainnames = [];
   structure.eachModel(function (mp) {
@@ -62921,7 +62927,7 @@ function assignSecondaryStructure (structure, secStruct) {
     });
   });
 
-  if (Debug) { Log.timeEnd('assignSecondaryStructure'); }
+  if (exports.Debug) { Log.timeEnd('assignSecondaryStructure'); }
 }
 
 var calculateSecondaryStructure = (function () {
@@ -63016,7 +63022,7 @@ var calculateSecondaryStructure = (function () {
   };
 
   return function calculateSecondaryStructure (structure) {
-    if (Debug) { Log.time('calculateSecondaryStructure'); }
+    if (exports.Debug) { Log.time('calculateSecondaryStructure'); }
 
     structure.eachPolymer(function (p) {
             // assign secondary structure
@@ -63046,7 +63052,7 @@ var calculateSecondaryStructure = (function () {
       });
     });
 
-    if (Debug) { Log.timeEnd('calculateSecondaryStructure'); }
+    if (exports.Debug) { Log.timeEnd('calculateSecondaryStructure'); }
   }
 }());
 
@@ -63072,7 +63078,7 @@ function getChainname (index) {
 }
 
 function calculateChainnames (structure, useExistingBonds) {
-  if (Debug) { Log.time('calculateChainnames'); }
+  if (exports.Debug) { Log.time('calculateChainnames'); }
 
   var doAutoChainName = true;
   structure.eachChain(function (c) {
@@ -63191,16 +63197,16 @@ function calculateChainnames (structure, useExistingBonds) {
     });
   }
 
-  if (Debug) { Log.timeEnd('calculateChainnames'); }
+  if (exports.Debug) { Log.timeEnd('calculateChainnames'); }
 }
 
 function calculateBonds (structure) {
-  if (Debug) { Log.time('calculateBonds'); }
+  if (exports.Debug) { Log.time('calculateBonds'); }
 
   calculateBondsWithin(structure);
   calculateBondsBetween(structure);
 
-  if (Debug) { Log.timeEnd('calculateBonds'); }
+  if (exports.Debug) { Log.timeEnd('calculateBonds'); }
 }
 
 function calculateResidueBonds (r) {
@@ -63214,7 +63220,7 @@ function calculateResidueBonds (r) {
   var end1 = end - 1;
 
   if (count > 500) {
-    if (Debug) { Log.warn('more than 500 atoms, skip residue for auto-bonding', r.qualifiedName()); }
+    if (exports.Debug) { Log.warn('more than 500 atoms, skip residue for auto-bonding', r.qualifiedName()); }
     return
   }
 
@@ -63267,7 +63273,7 @@ function calculateResidueBonds (r) {
 }
 
 function calculateAtomBondMap (structure) {
-  if (Debug) { Log.time('calculateAtomBondMap'); }
+  if (exports.Debug) { Log.time('calculateAtomBondMap'); }
 
   var atomBondMap = [];
 
@@ -63278,13 +63284,13 @@ function calculateAtomBondMap (structure) {
     atomBondMap[ ai1 ][ ai2 ] = bp.index;
   });
 
-  if (Debug) { Log.timeEnd('calculateAtomBondMap'); }
+  if (exports.Debug) { Log.timeEnd('calculateAtomBondMap'); }
 
   return atomBondMap
 }
 
 function calculateBondsWithin (structure, onlyAddRung) {
-  if (Debug) { Log.time('calculateBondsWithin'); }
+  if (exports.Debug) { Log.time('calculateBondsWithin'); }
 
   var bondStore = structure.bondStore;
   var rungBondStore = structure.rungBondStore;
@@ -63342,11 +63348,11 @@ function calculateBondsWithin (structure, onlyAddRung) {
 
   structure.atomSetDict.rung = rungAtomSet;
 
-  if (Debug) { Log.timeEnd('calculateBondsWithin'); }
+  if (exports.Debug) { Log.timeEnd('calculateBondsWithin'); }
 }
 
 function calculateBondsBetween (structure, onlyAddBackbone, useExistingBonds) {
-  if (Debug) { Log.time('calculateBondsBetween'); }
+  if (exports.Debug) { Log.time('calculateBondsBetween'); }
 
   var bondStore = structure.bondStore;
   var backboneBondStore = structure.backboneBondStore;
@@ -63393,7 +63399,7 @@ function calculateBondsBetween (structure, onlyAddBackbone, useExistingBonds) {
   structure.atomSetDict.backbone = backboneAtomSet;
 
   if (!onlyAddBackbone) {
-    if (Debug) { Log.time('calculateBondsBetween inter'); }
+    if (exports.Debug) { Log.time('calculateBondsBetween inter'); }
     var spatialHash = structure.spatialHash;
     structure.eachResidue(function (rp) {
       if (rp.backboneType === UnknownBackboneType && !rp.isWater()) {
@@ -63407,16 +63413,16 @@ function calculateBondsBetween (structure, onlyAddBackbone, useExistingBonds) {
         });
       }
     });
-    if (Debug) { Log.timeEnd('calculateBondsBetween inter'); }
+    if (exports.Debug) { Log.timeEnd('calculateBondsBetween inter'); }
   }
 
-  if (Debug) { Log.timeEnd('calculateBondsBetween'); }
+  if (exports.Debug) { Log.timeEnd('calculateBondsBetween'); }
 }
 
 function buildUnitcellAssembly (structure) {
   if (!structure.unitcell) { return }
 
-  if (Debug) { Log.time('buildUnitcellAssembly'); }
+  if (exports.Debug) { Log.time('buildUnitcellAssembly'); }
 
   var uc = structure.unitcell;
 
@@ -63533,7 +63539,7 @@ function buildUnitcellAssembly (structure) {
   structure.biomolDict.UNITCELL = unitcellAssembly;
   structure.biomolDict.SUPERCELL = supercellAssembly;
 
-  if (Debug) { Log.timeEnd('buildUnitcellAssembly'); }
+  if (exports.Debug) { Log.timeEnd('buildUnitcellAssembly'); }
 }
 
 var elm1 = [ 'H', 'C', 'O', 'N', 'S', 'P' ];
@@ -67265,7 +67271,7 @@ Structure.prototype.getRungBondData = function getRungBondData (params) {
  * @return {Vector3} the box
  */
 Structure.prototype.getBoundingBox = function getBoundingBox (selection, box) {
-  if (Debug) { Log.time('getBoundingBox'); }
+  if (exports.Debug) { Log.time('getBoundingBox'); }
 
   box = box || new Box3();
 
@@ -67294,7 +67300,7 @@ Structure.prototype.getBoundingBox = function getBoundingBox (selection, box) {
   box.min.set(minX, minY, minZ);
   box.max.set(maxX, maxY, maxZ);
 
-  if (Debug) { Log.timeEnd('getBoundingBox'); }
+  if (exports.Debug) { Log.timeEnd('getBoundingBox'); }
 
   return box
 };
@@ -67305,7 +67311,7 @@ Structure.prototype.getBoundingBox = function getBoundingBox (selection, box) {
  * @return {PrincipalAxes} the principal axes
  */
 Structure.prototype.getPrincipalAxes = function getPrincipalAxes (selection) {
-  if (Debug) { Log.time('getPrincipalAxes'); }
+  if (exports.Debug) { Log.time('getPrincipalAxes'); }
 
   var i = 0;
   var coords = new Matrix(3, this.atomCount);
@@ -67318,7 +67324,7 @@ Structure.prototype.getPrincipalAxes = function getPrincipalAxes (selection) {
     i += 3;
   }, selection);
 
-  if (Debug) { Log.timeEnd('getPrincipalAxes'); }
+  if (exports.Debug) { Log.timeEnd('getPrincipalAxes'); }
 
   return new PrincipalAxes(coords)
 };
@@ -67511,7 +67517,7 @@ Superposition.prototype._superpose = function _superpose (coords1, coords2) {
   multiply3x3(this.R, this.U, this.VH);
 
   if (mat3x3determinant(this.R) < 0.0) {
-    if (Debug) { Log.log('R not a right handed system'); }
+    if (exports.Debug) { Log.log('R not a right handed system'); }
 
     multiply3x3(this.tmp, this.c, this.VH);
     multiply3x3(this.R, this.U, this.tmp);
@@ -70075,7 +70081,7 @@ Representation.prototype.build = function build (updateWhat) {
 };
 
 Representation.prototype.make = function make (updateWhat, callback) {
-  if (Debug) { Log.time('Representation.make ' + this.type); }
+  if (exports.Debug) { Log.time('Representation.make ' + this.type); }
 
   var _make = function () {
     if (updateWhat) {
@@ -70087,16 +70093,16 @@ Representation.prototype.make = function make (updateWhat, callback) {
       this.clear();
       this.create();
       if (!this.manualAttach && !this.disposed) {
-        if (Debug) { Log.time('Representation.attach ' + this.type); }
+        if (exports.Debug) { Log.time('Representation.attach ' + this.type); }
         this.attach(function () {
-          if (Debug) { Log.timeEnd('Representation.attach ' + this.type); }
+          if (exports.Debug) { Log.timeEnd('Representation.attach ' + this.type); }
           this.tasks.decrement();
           if (callback) { callback(); }
         }.bind(this));
       }
     }
 
-    if (Debug) { Log.timeEnd('Representation.make ' + this.type); }
+    if (exports.Debug) { Log.timeEnd('Representation.make ' + this.type); }
   }.bind(this);
 
   if (this.prepare) {
@@ -73409,7 +73415,7 @@ function logReprUnknown (type) {
 }
 
 function makeRepresentation (type, object, viewer, params) {
-  if (Debug) { Log.time('makeRepresentation ' + type); }
+  if (exports.Debug) { Log.time('makeRepresentation ' + type); }
 
   var ReprClass;
 
@@ -73454,7 +73460,7 @@ function makeRepresentation (type, object, viewer, params) {
 
   var repr = new ReprClass(object, viewer, params);
 
-  if (Debug) { Log.timeEnd('makeRepresentation ' + type); }
+  if (exports.Debug) { Log.timeEnd('makeRepresentation ' + type); }
 
   return repr
 }
@@ -74565,7 +74571,7 @@ Stage.prototype.defaultFileRepresentation = function defaultFileRepresentation (
       colorReverse = true;
     }
 
-    if (Debug) { console.log(sizeScore, atomCount, instanceCount, backboneOnly); }
+    if (exports.Debug) { console.log(sizeScore, atomCount, instanceCount, backboneOnly); }
 
     if (residueCount / instanceCount < 4) {
       object.addRepresentation('ball+stick', {
@@ -75387,7 +75393,7 @@ Alignment.prototype.makeScoreFn = function makeScoreFn () {
 };
 
 Alignment.prototype.calc = function calc () {
-  if (Debug) { Log.time('Alignment.calc'); }
+  if (exports.Debug) { Log.time('Alignment.calc'); }
 
   this.initMatrices();
 
@@ -75433,15 +75439,15 @@ Alignment.prototype.calc = function calc () {
     }
   }
 
-  if (Debug) { Log.timeEnd('Alignment.calc'); }
+  if (exports.Debug) { Log.timeEnd('Alignment.calc'); }
 
-  if (Debug) { Log.log(this.S, this.V, this.H); }
+  if (exports.Debug) { Log.log(this.S, this.V, this.H); }
 };
 
 Alignment.prototype.trace = function trace () {
     var this$1 = this;
 
-  if (Debug) { Log.time('Alignment.trace'); }
+  if (exports.Debug) { Log.time('Alignment.trace'); }
 
   this.ali1 = '';
   this.ali2 = '';
@@ -75463,8 +75469,8 @@ Alignment.prototype.trace = function trace () {
     this.score = this.H[i][j];
   }
 
-  if (Debug) { Log.log('Alignment: SCORE', this.score); }
-  if (Debug) { Log.log('Alignment: S, V, H', this.S[i][j], this.V[i][j], this.H[i][j]); }
+  if (exports.Debug) { Log.log('Alignment: SCORE', this.score); }
+  if (exports.Debug) { Log.log('Alignment: S, V, H', this.S[i][j], this.V[i][j], this.H[i][j]); }
 
   while (i > 0 && j > 0) {
     if (mat === 'S') {
@@ -75530,9 +75536,9 @@ Alignment.prototype.trace = function trace () {
     --j;
   }
 
-  if (Debug) { Log.timeEnd('Alignment.trace'); }
+  if (exports.Debug) { Log.timeEnd('Alignment.trace'); }
 
-  if (Debug) { Log.log([this.ali1, this.ali2]); }
+  if (exports.Debug) { Log.log([this.ali1, this.ali2]); }
 };
 
 /**
@@ -77913,7 +77919,7 @@ var StructureView = (function (Structure$$1) {
   StructureView.prototype.refresh = function refresh () {
     var this$1 = this;
 
-    if (Debug) { Log.time('StructureView.refresh'); }
+    if (exports.Debug) { Log.time('StructureView.refresh'); }
 
     this.atomSetCache = {};
 
@@ -77935,7 +77941,7 @@ var StructureView = (function (Structure$$1) {
     this.boundingBox = this.getBoundingBox();
     this.center = this.boundingBox.getCenter();
 
-    if (Debug) { Log.timeEnd('StructureView.refresh'); }
+    if (exports.Debug) { Log.timeEnd('StructureView.refresh'); }
 
     this.signals.refreshed.dispatch();
   };
@@ -81589,7 +81595,7 @@ var CartoonRepresentation = (function (StructureRepresentation$$1) {
   CartoonRepresentation.prototype.updateData = function updateData (what, data) {
     var this$1 = this;
 
-    if (Debug) { Log.time(this.type + ' repr update'); }
+    if (exports.Debug) { Log.time(this.type + ' repr update'); }
 
     what = what || {};
 
@@ -81625,7 +81631,7 @@ var CartoonRepresentation = (function (StructureRepresentation$$1) {
       data.bufferList[ i ].setAttributes(bufferData);
     }
 
-    if (Debug) { Log.timeEnd(this.type + ' repr update'); }
+    if (exports.Debug) { Log.timeEnd(this.type + ' repr update'); }
   };
 
   CartoonRepresentation.prototype.setParameters = function setParameters (params) {
@@ -82901,7 +82907,7 @@ var HelixorientRepresentation = (function (StructureRepresentation$$1) {
   };
 
   HelixorientRepresentation.prototype.updateData = function updateData (what, data) {
-    if (Debug) { Log.time(this.type + ' repr update'); }
+    if (exports.Debug) { Log.time(this.type + ' repr update'); }
 
     what = what || {};
 
@@ -82930,7 +82936,7 @@ var HelixorientRepresentation = (function (StructureRepresentation$$1) {
       data.bufferList[ j ].setAttributes(bufferData);
     }
 
-    if (Debug) { Log.timeEnd(this.type + ' repr update'); }
+    if (exports.Debug) { Log.timeEnd(this.type + ' repr update'); }
   };
 
   return HelixorientRepresentation;
@@ -87775,7 +87781,7 @@ Parser.prototype._parse = function _parse () {};
 Parser.prototype._beforeParse = function _beforeParse () {};
 
 Parser.prototype._afterParse = function _afterParse () {
-  if (Debug) { Log.log(this[ this.__objName ]); }
+  if (exports.Debug) { Log.log(this[ this.__objName ]); }
 };
 
 Object.defineProperties( Parser.prototype, prototypeAccessors$26 );
@@ -88275,7 +88281,7 @@ var PdbParser = (function (StructureParser$$1) {
   PdbParser.prototype._parse = function _parse () {
     // http://www.wwpdb.org/documentation/file-format.php
 
-    if (Debug) { Log.time('PdbParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('PdbParser._parse ' + this.name); }
 
     var isLegacy = false;
     var headerLine = this.streamer.peekLines(1)[ 0 ];
@@ -88856,7 +88862,7 @@ var PdbParser = (function (StructureParser$$1) {
     }
     buildUnitcellAssembly(s);
 
-    if (Debug) { Log.timeEnd('PdbParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('PdbParser._parse ' + this.name); }
   };
 
   Object.defineProperties( PdbParser.prototype, prototypeAccessors );
@@ -89476,7 +89482,7 @@ function processConnections (cif, structure, asymIdDict) {
       if (!atomIndices1) {
         var selection1 = new Selection(sele1);
         if (selection1.selection.error) {
-          if (Debug) { Log.warn('invalid selection for connection', sele1); }
+          if (exports.Debug) { Log.warn('invalid selection for connection', sele1); }
           continue
         }
         atomIndices1 = structure.getAtomIndices(selection1);
@@ -89496,7 +89502,7 @@ function processConnections (cif, structure, asymIdDict) {
       if (!atomIndices2) {
         var selection2 = new Selection(sele2);
         if (selection2.selection.error) {
-          if (Debug) { Log.warn('invalid selection for connection', sele2); }
+          if (exports.Debug) { Log.warn('invalid selection for connection', sele2); }
           continue
         }
         atomIndices2 = structure.getAtomIndices(selection2);
@@ -89523,7 +89529,7 @@ function processConnections (cif, structure, asymIdDict) {
       // console.log( k, l );
 
       if (k === 0 || l === 0) {
-        if (Debug) { Log.warn('no atoms found for', sele1, sele2); }
+        if (exports.Debug) { Log.warn('no atoms found for', sele1, sele2); }
         continue
       }
 
@@ -89700,7 +89706,7 @@ var CifParser = (function (StructureParser$$1) {
             } else {
               if (!cif[ category ]) { cif[ category ] = {}; }
               if (cif[ category ][ name ]) {
-                if (Debug) { Log.warn(category, name, 'already exists'); }
+                if (exports.Debug) { Log.warn(category, name, 'already exists'); }
               } else {
                 cif[ category ][ name ] = [];
                 loopPointers.push(cif[ category ][ name ]);
@@ -89726,7 +89732,7 @@ var CifParser = (function (StructureParser$$1) {
               if (!cif[ category ]) { cif[ category ] = {}; }
 
               if (cif[ category ][ name ]) {
-                if (Debug) { Log.warn(category, name, 'already exists'); }
+                if (exports.Debug) { Log.warn(category, name, 'already exists'); }
               } else {
                 cif[ category ][ name ] = value;
               }
@@ -89854,12 +89860,12 @@ var CifParser = (function (StructureParser$$1) {
 
               sb.addAtom(modelIdx, chainname, chainid, resname, resno, hetero, undefined, inscode);
 
-              if (Debug) {
+              if (exports.Debug) {
                 // check if one-to-many (chainname-asymId) relationship is
                 // actually a many-to-many mapping
                 var assignedChainname = asymIdDict[ chainid ];
                 if (assignedChainname !== undefined && assignedChainname !== chainname) {
-                  if (Debug) { Log.warn(assignedChainname, chainname); }
+                  if (exports.Debug) { Log.warn(assignedChainname, chainname); }
                 }
               }
               // chainname mapping: label_asym_id -> auth_asym_id
@@ -89910,7 +89916,7 @@ var CifParser = (function (StructureParser$$1) {
               cif[ currentCategory ][ currentName ] = line;
             }
           } else {
-            if (Debug) { Log.log('CifParser._parse: unknown state', line); }
+            if (exports.Debug) { Log.log('CifParser._parse: unknown state', line); }
           }
         }
       }
@@ -90019,7 +90025,7 @@ var CifParser = (function (StructureParser$$1) {
       s.extraData.cif = cif;
     }
 
-    if (Debug) { Log.timeEnd('CifParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('CifParser._parse ' + this.name); }
   };
 
   Object.defineProperties( CifParser.prototype, prototypeAccessors );
@@ -90053,7 +90059,7 @@ var GroParser = (function (StructureParser$$1) {
   GroParser.prototype._parse = function _parse () {
         // http://manual.gromacs.org/current/online/gro.html
 
-    if (Debug) { Log.time('GroParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('GroParser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -90177,7 +90183,7 @@ var GroParser = (function (StructureParser$$1) {
 
     calculateSecondaryStructure(s);
 
-    if (Debug) { Log.timeEnd('GroParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('GroParser._parse ' + this.name); }
   };
 
   Object.defineProperties( GroParser.prototype, prototypeAccessors );
@@ -91000,7 +91006,7 @@ var MmtfParser = (function (StructureParser$$1) {
   MmtfParser.prototype._parse = function _parse () {
     // https://github.com/rcsb/mmtf
 
-    if (Debug) { Log.time('MmtfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('MmtfParser._parse ' + this.name); }
 
     var i, il, j, jl, groupData;
 
@@ -91341,7 +91347,7 @@ var MmtfParser = (function (StructureParser$$1) {
 
     buildUnitcellAssembly(s);
 
-    if (Debug) { Log.timeEnd('MmtfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('MmtfParser._parse ' + this.name); }
   };
 
   Object.defineProperties( MmtfParser.prototype, prototypeAccessors );
@@ -91385,7 +91391,7 @@ var Mol2Parser = (function (StructureParser$$1) {
   Mol2Parser.prototype._parse = function _parse () {
     // http://paulbourke.net/dataformats/mol2/
 
-    if (Debug) { Log.time('Mol2Parser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('Mol2Parser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -91545,7 +91551,7 @@ var Mol2Parser = (function (StructureParser$$1) {
     assignResidueTypeBonds(s);
     calculateSecondaryStructure(s);
 
-    if (Debug) { Log.timeEnd('Mol2Parser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('Mol2Parser._parse ' + this.name); }
   };
 
   Object.defineProperties( Mol2Parser.prototype, prototypeAccessors );
@@ -91608,7 +91614,7 @@ var SdfParser = (function (StructureParser$$1) {
     // https://en.wikipedia.org/wiki/Chemical_table_file#SDF
     // http://download.accelrys.com/freeware/ctfile-formats/ctfile-formats.zip
 
-    if (Debug) { Log.time('SdfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('SdfParser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -91745,7 +91751,7 @@ var SdfParser = (function (StructureParser$$1) {
     s.finalizeBonds();
     assignResidueTypeBonds(s);
 
-    if (Debug) { Log.timeEnd('SdfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('SdfParser._parse ' + this.name); }
   };
 
   SdfParser.prototype._postProcess = function _postProcess () {
@@ -91800,7 +91806,7 @@ var PrmtopParser = (function (StructureParser$$1) {
     // http://ambermd.org/prmtop.pdf
     // http://ambermd.org/formats.html#topology
 
-    if (Debug) { Log.time('PrmtopParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('PrmtopParser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -91990,7 +91996,7 @@ var PrmtopParser = (function (StructureParser$$1) {
     calculateChainnames(s, true);
     assignResidueTypeBonds(s);
 
-    if (Debug) { Log.timeEnd('PrmtopParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('PrmtopParser._parse ' + this.name); }
   };
 
   Object.defineProperties( PrmtopParser.prototype, prototypeAccessors );
@@ -92033,7 +92039,7 @@ var PsfParser = (function (StructureParser$$1) {
   PsfParser.prototype._parse = function _parse () {
     // http://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html
 
-    if (Debug) { Log.time('PsfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('PsfParser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -92154,7 +92160,7 @@ var PsfParser = (function (StructureParser$$1) {
     calculateBondsBetween(s, true, true);
     assignResidueTypeBonds(s);
 
-    if (Debug) { Log.timeEnd('PsfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('PsfParser._parse ' + this.name); }
   };
 
   Object.defineProperties( PsfParser.prototype, prototypeAccessors );
@@ -92195,7 +92201,7 @@ var TopParser = (function (StructureParser$$1) {
   TopParser.prototype._parse = function _parse () {
     // http://manual.gromacs.org/online/top.html
 
-    if (Debug) { Log.time('TopParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('TopParser._parse ' + this.name); }
 
     var s = this.structure;
     var sb = this.structureBuilder;
@@ -92353,7 +92359,7 @@ var TopParser = (function (StructureParser$$1) {
     calculateBondsBetween(s, true, true);
     assignResidueTypeBonds(s);
 
-    if (Debug) { Log.timeEnd('TopParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('TopParser._parse ' + this.name); }
   };
 
   Object.defineProperties( TopParser.prototype, prototypeAccessors );
@@ -92459,7 +92465,7 @@ var DcdParser = (function (TrajectoryParser$$1) {
     // Z(I), I=1,NATOM
     // ==========================================================================
 
-    if (Debug) { Log.time('DcdParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('DcdParser._parse ' + this.name); }
 
     var bin = ensureBuffer(this.streamer.data);
     var dv = new DataView(bin);
@@ -92604,7 +92610,7 @@ var DcdParser = (function (TrajectoryParser$$1) {
     // console.log(header.TITLE)
     // console.log('isCharmm', isCharmm, 'extraBlock', extraBlock, 'fourDims, fourDims)
 
-    if (Debug) { Log.timeEnd('DcdParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('DcdParser._parse ' + this.name); }
   };
 
   Object.defineProperties( DcdParser.prototype, prototypeAccessors );
@@ -93227,7 +93233,7 @@ var NctrajParser = (function (TrajectoryParser$$1) {
   NctrajParser.prototype._parse = function _parse () {
     // http://ambermd.org/netcdf/nctraj.xhtml
 
-    if (Debug) { Log.time('NctrajParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('NctrajParser._parse ' + this.name); }
 
     var netcdfReader = new NetcdfReader(this.streamer.data);
 
@@ -93259,7 +93265,7 @@ var NctrajParser = (function (TrajectoryParser$$1) {
       f.deltaTime = times[1] - times[0];
     }
 
-    if (Debug) { Log.timeEnd('NctrajParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('NctrajParser._parse ' + this.name); }
   };
 
   Object.defineProperties( NctrajParser.prototype, prototypeAccessors );
@@ -93294,7 +93300,7 @@ var TrrParser = (function (TrajectoryParser$$1) {
   TrrParser.prototype._parse = function _parse () {
     // https://github.com/gromacs/gromacs/blob/master/src/gromacs/fileio/trrio.cpp
 
-    if (Debug) { Log.time('TrrParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('TrrParser._parse ' + this.name); }
 
     var bin = ensureBuffer(this.streamer.data);
     var dv = new DataView(bin);
@@ -93407,7 +93413,7 @@ var TrrParser = (function (TrajectoryParser$$1) {
       f.deltaTime = times[1] - times[0];
     }
 
-    if (Debug) { Log.timeEnd('TrrParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('TrrParser._parse ' + this.name); }
   };
 
   Object.defineProperties( TrrParser.prototype, prototypeAccessors );
@@ -93558,7 +93564,7 @@ var XtcParser = (function (TrajectoryParser$$1) {
     // https://github.com/gromacs/gromacs/blob/master/src/gromacs/fileio/xtcio.cpp
     // https://github.com/gromacs/gromacs/blob/master/src/gromacs/fileio/libxdrf.cpp
 
-    if (Debug) { Log.time('XtcParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('XtcParser._parse ' + this.name); }
 
     var bin = ensureBuffer(this.streamer.data);
     var dv = new DataView(bin);
@@ -93793,7 +93799,7 @@ var XtcParser = (function (TrajectoryParser$$1) {
       f.deltaTime = times[1] - times[0];
     }
 
-    if (Debug) { Log.timeEnd('XtcParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('XtcParser._parse ' + this.name); }
   };
 
   Object.defineProperties( XtcParser.prototype, prototypeAccessors );
@@ -93871,7 +93877,7 @@ var CubeParser = (function (VolumeParser$$1) {
   CubeParser.prototype._parse = function _parse () {
     // http://paulbourke.net/dataformats/cube/
 
-    if (Debug) { Log.time('CubeParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('CubeParser._parse ' + this.name); }
 
     var v = this.volume;
     var headerLines = this.streamer.peekLines(6);
@@ -93927,7 +93933,7 @@ var CubeParser = (function (VolumeParser$$1) {
     v.header = header;
     v.setData(data, header.NVZ, header.NVY, header.NVX);
 
-    if (Debug) { Log.timeEnd('CubeParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('CubeParser._parse ' + this.name); }
   };
 
   CubeParser.prototype.getMatrix = function getMatrix () {
@@ -93981,7 +93987,7 @@ var Dsn6Parser = (function (VolumeParser$$1) {
     // DSN6 http://www.uoxray.uoregon.edu/tnt/manual/node104.html
     // BRIX http://svn.cgl.ucsf.edu/svn/chimera/trunk/libs/VolumeData/dsn6/brix-1.html
 
-    if (Debug) { Log.time('Dsn6Parser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('Dsn6Parser._parse ' + this.name); }
 
     var v = this.volume;
     var header = {};
@@ -94056,7 +94062,7 @@ var Dsn6Parser = (function (VolumeParser$$1) {
 
     v.header = header;
 
-    if (Debug) { Log.log(header, divisor, summand); }
+    if (exports.Debug) { Log.log(header, divisor, summand); }
 
     var data = new Float32Array(
       header.xExtent * header.yExtent * header.zExtent
@@ -94100,7 +94106,7 @@ var Dsn6Parser = (function (VolumeParser$$1) {
       v.setStats(undefined, undefined, undefined, header.sigma);
     }
 
-    if (Debug) { Log.timeEnd('Dsn6Parser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('Dsn6Parser._parse ' + this.name); }
   };
 
   Dsn6Parser.prototype.getMatrix = function getMatrix () {
@@ -94201,7 +94207,7 @@ var DxParser = (function (VolumeParser$$1) {
   DxParser.prototype._parse = function _parse () {
     // http://apbs-pdb2pqr.readthedocs.io/en/latest/formats/opendx.html
 
-    if (Debug) { Log.time('DxParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('DxParser._parse ' + this.name); }
 
     var v = this.volume;
     var headerLines = this.streamer.peekLines(30);
@@ -94239,7 +94245,7 @@ var DxParser = (function (VolumeParser$$1) {
 
     v.setData(data, header.nz, header.ny, header.nx);
 
-    if (Debug) { Log.timeEnd('DxParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('DxParser._parse ' + this.name); }
   };
 
   DxParser.prototype.parseHeaderLines = function parseHeaderLines (headerLines) {
@@ -94350,7 +94356,7 @@ var DxbinParser = (function (DxParser$$1) {
   DxbinParser.prototype._parse = function _parse () {
     // https://github.com/Electrostatics/apbs-pdb2pqr/issues/216
 
-    if (Debug) { Log.time('DxbinParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('DxbinParser._parse ' + this.name); }
 
     var bin = ensureBuffer(this.streamer.data);
     var headerLines = uint8ToLines(new Uint8Array(bin, 0, 1000));
@@ -94368,7 +94374,7 @@ var DxbinParser = (function (DxParser$$1) {
 
     this.volume.setData(data, header.nz, header.ny, header.nx);
 
-    if (Debug) { Log.timeEnd('DxbinParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('DxbinParser._parse ' + this.name); }
   };
 
   Object.defineProperties( DxbinParser.prototype, prototypeAccessors );
@@ -94410,7 +94416,7 @@ var MrcParser = (function (VolumeParser$$1) {
     // MRC format does not use the skew transformation header records (words 25-37)
     // CCP4 format does not use the ORIGIN header records (words 50-52)
 
-    if (Debug) { Log.time('MrcParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('MrcParser._parse ' + this.name); }
 
     var v = this.volume;
     var header = {};
@@ -94559,7 +94565,7 @@ var MrcParser = (function (VolumeParser$$1) {
       v.setStats(header.DMIN, header.DMAX, header.DMEAN, header.ARMS);
     }
 
-    if (Debug) { Log.timeEnd('MrcParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('MrcParser._parse ' + this.name); }
   };
 
   MrcParser.prototype.getMatrix = function getMatrix () {
@@ -94662,7 +94668,7 @@ var XplorParser = (function (VolumeParser$$1) {
     // http://hincklab.uthscsa.edu/html/soft_packs/msi_docs/insight980/xplor/formats.html
     // http://www.mrc-lmb.cam.ac.uk/public/xtal/doc/cns/cns_1.3/tutorial/formats/maps/text.html
 
-    if (Debug) { Log.time('XplorParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('XplorParser._parse ' + this.name); }
 
     var v = this.volume;
     var headerLines = this.streamer.peekLines(8);
@@ -94737,7 +94743,7 @@ var XplorParser = (function (VolumeParser$$1) {
       v.setStats(undefined, undefined, header.RAVE, header.RSIGMA);
     }
 
-    if (Debug) { Log.timeEnd('XplorParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('XplorParser._parse ' + this.name); }
   };
 
   XplorParser.prototype.getMatrix = function getMatrix () {
@@ -95761,11 +95767,11 @@ var MsgpackParser = (function (Parser$$1) {
   prototypeAccessors.isBinary.get = function () { return true };
 
   MsgpackParser.prototype._parse = function _parse () {
-    if (Debug) { Log.time('MsgpackParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('MsgpackParser._parse ' + this.name); }
 
     this.msgpack.data = decodeMsgpack(this.streamer.data);
 
-    if (Debug) { Log.timeEnd('MsgpackParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('MsgpackParser._parse ' + this.name); }
   };
 
   Object.defineProperties( MsgpackParser.prototype, prototypeAccessors );
@@ -95805,11 +95811,11 @@ var NetcdfParser = (function (Parser$$1) {
   prototypeAccessors.isBinary.get = function () { return true };
 
   NetcdfParser.prototype._parse = function _parse () {
-    if (Debug) { Log.time('NetcdfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('NetcdfParser._parse ' + this.name); }
 
     this.netcdf.data = new NetcdfReader(this.streamer.data);
 
-    if (Debug) { Log.timeEnd('NetcdfParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('NetcdfParser._parse ' + this.name); }
   };
 
   Object.defineProperties( NetcdfParser.prototype, prototypeAccessors );
@@ -96008,7 +96014,7 @@ var XmlParser = (function (Parser$$1) {
   };
 
   XmlParser.prototype._parse = function _parse () {
-    if (Debug) { Log.time('XmlParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('XmlParser._parse ' + this.name); }
 
     if (this.useDomParser) {
       if (this.streamer.data instanceof window.Document) {
@@ -96020,7 +96026,7 @@ var XmlParser = (function (Parser$$1) {
       this.xml.data = this.__xmlParser(this.streamer.asText());
     }
 
-    if (Debug) { Log.timeEnd('XmlParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('XmlParser._parse ' + this.name); }
   };
 
   Object.defineProperties( XmlParser.prototype, prototypeAccessors );
@@ -96135,7 +96141,7 @@ var prototypeAccessors$30 = { type: { configurable: true } };
 prototypeAccessors$30.type.get = function () { return 'validation' };
 
 Validation.prototype.fromXml = function fromXml (xml) {
-  if (Debug) { Log.time('Validation.fromXml'); }
+  if (exports.Debug) { Log.time('Validation.fromXml'); }
 
   var rsrzDict = this.rsrzDict;
   var rsccDict = this.rsccDict;
@@ -96150,7 +96156,7 @@ Validation.prototype.fromXml = function fromXml (xml) {
   var _clashDict = {};
   var clashList = [];
 
-  if (Debug) { Log.time('Validation.fromXml#clashDict'); }
+  if (exports.Debug) { Log.time('Validation.fromXml#clashDict'); }
 
   for (var i = 0, il = groups.length; i < il; ++i) {
     var g = groups[ i ];
@@ -96195,7 +96201,7 @@ Validation.prototype.fromXml = function fromXml (xml) {
     }
   }
 
-  if (Debug) { Log.timeEnd('Validation.fromXml#clashDict'); }
+  if (exports.Debug) { Log.timeEnd('Validation.fromXml#clashDict'); }
 
   for (var i$1 = 0, il$1 = groups.length; i$1 < il$1; ++i$1) {
     var g$1 = groups[ i$1 ];
@@ -96244,11 +96250,11 @@ Validation.prototype.fromXml = function fromXml (xml) {
 
   this.clashSele = clashList.length ? clashList.join(' OR ') : 'NONE';
 
-  if (Debug) { Log.timeEnd('Validation.fromXml'); }
+  if (exports.Debug) { Log.timeEnd('Validation.fromXml'); }
 };
 
 Validation.prototype.getClashData = function getClashData (params) {
-  if (Debug) { Log.time('Validation.getClashData'); }
+  if (exports.Debug) { Log.time('Validation.getClashData'); }
 
   var p = params || {};
 
@@ -96271,7 +96277,7 @@ Validation.prototype.getClashData = function getClashData (params) {
   var radius = new Float32Array(n);
   var picking = new Float32Array(n);
 
-  if (Debug) { Log.time('Validation.getClashData#atomDict'); }
+  if (exports.Debug) { Log.time('Validation.getClashData#atomDict'); }
 
   var atomDict = this.atomDict;
 
@@ -96282,7 +96288,7 @@ Validation.prototype.getClashData = function getClashData (params) {
     }
   });
 
-  if (Debug) { Log.timeEnd('Validation.getClashData#atomDict'); }
+  if (exports.Debug) { Log.timeEnd('Validation.getClashData#atomDict'); }
 
   var i = 0;
 
@@ -96311,7 +96317,7 @@ Validation.prototype.getClashData = function getClashData (params) {
     ++i;
   });
 
-  if (Debug) { Log.timeEnd('Validation.getClashData'); }
+  if (exports.Debug) { Log.timeEnd('Validation.getClashData'); }
 
   return {
     position1: position1.subarray(0, i * 3),
@@ -96353,11 +96359,11 @@ var ValidationParser = (function (XmlParser$$1) {
   ValidationParser.prototype._parse = function _parse () {
     XmlParser$$1.prototype._parse.call(this);
 
-    if (Debug) { Log.time('ValidationParser._parse ' + this.name); }
+    if (exports.Debug) { Log.time('ValidationParser._parse ' + this.name); }
 
     this.validation.fromXml(this.xml.data);
 
-    if (Debug) { Log.timeEnd('ValidationParser._parse ' + this.name); }
+    if (exports.Debug) { Log.timeEnd('ValidationParser._parse ' + this.name); }
   };
 
   Object.defineProperties( ValidationParser.prototype, prototypeAccessors );
@@ -99822,5 +99828,74 @@ if (typeof window !== 'undefined' && !window.Promise) {
   window.Promise = Promise$1;
 }
 
-export { Version, Debug, setDebug, ScriptExtensions, DatasourceRegistry, DecompressorRegistry, StaticDatasource, MdsrvDatasource, ParserRegistry, autoLoad, RepresentationRegistry, ColormakerRegistry, Colormaker, Selection, PdbWriter, SdfWriter, StlWriter, Stage, Collection, ComponentCollection, RepresentationCollection, Assembly, TrajectoryPlayer, superpose, Superposition, guessElement, flatten, Queue, Counter, throttle, download, getQuery, getDataInfo, getFileInfo, uniqueArray, BufferRepresentation, ArrowBuffer, BoxBuffer, ConeBuffer, CylinderBuffer, EllipsoidBuffer, OctahedronBuffer, SphereBuffer, TetrahedronBuffer, TextBuffer, TorusBuffer, Shape$1 as Shape, Structure, Kdtree, SpatialHash, MolecularSurface, Volume, LeftMouseButton, MiddleMouseButton, RightMouseButton, MouseActions, KeyActions, Signal, Matrix3, Matrix4, Vector2, Vector3, Box3, Quaternion, Euler, Plane, Color };
-//# sourceMappingURL=ngl.esm.js.map
+exports.Version = Version;
+exports.setDebug = setDebug;
+exports.ScriptExtensions = ScriptExtensions;
+exports.DatasourceRegistry = DatasourceRegistry;
+exports.DecompressorRegistry = DecompressorRegistry;
+exports.StaticDatasource = StaticDatasource;
+exports.MdsrvDatasource = MdsrvDatasource;
+exports.ParserRegistry = ParserRegistry;
+exports.autoLoad = autoLoad;
+exports.RepresentationRegistry = RepresentationRegistry;
+exports.ColormakerRegistry = ColormakerRegistry;
+exports.Colormaker = Colormaker;
+exports.Selection = Selection;
+exports.PdbWriter = PdbWriter;
+exports.SdfWriter = SdfWriter;
+exports.StlWriter = StlWriter;
+exports.Stage = Stage;
+exports.Collection = Collection;
+exports.ComponentCollection = ComponentCollection;
+exports.RepresentationCollection = RepresentationCollection;
+exports.Assembly = Assembly;
+exports.TrajectoryPlayer = TrajectoryPlayer;
+exports.superpose = superpose;
+exports.Superposition = Superposition;
+exports.guessElement = guessElement;
+exports.flatten = flatten;
+exports.Queue = Queue;
+exports.Counter = Counter;
+exports.throttle = throttle;
+exports.download = download;
+exports.getQuery = getQuery;
+exports.getDataInfo = getDataInfo;
+exports.getFileInfo = getFileInfo;
+exports.uniqueArray = uniqueArray;
+exports.BufferRepresentation = BufferRepresentation;
+exports.ArrowBuffer = ArrowBuffer;
+exports.BoxBuffer = BoxBuffer;
+exports.ConeBuffer = ConeBuffer;
+exports.CylinderBuffer = CylinderBuffer;
+exports.EllipsoidBuffer = EllipsoidBuffer;
+exports.OctahedronBuffer = OctahedronBuffer;
+exports.SphereBuffer = SphereBuffer;
+exports.TetrahedronBuffer = TetrahedronBuffer;
+exports.TextBuffer = TextBuffer;
+exports.TorusBuffer = TorusBuffer;
+exports.Shape = Shape$1;
+exports.Structure = Structure;
+exports.Kdtree = Kdtree;
+exports.SpatialHash = SpatialHash;
+exports.MolecularSurface = MolecularSurface;
+exports.Volume = Volume;
+exports.LeftMouseButton = LeftMouseButton;
+exports.MiddleMouseButton = MiddleMouseButton;
+exports.RightMouseButton = RightMouseButton;
+exports.MouseActions = MouseActions;
+exports.KeyActions = KeyActions;
+exports.Signal = Signal;
+exports.Matrix3 = Matrix3;
+exports.Matrix4 = Matrix4;
+exports.Vector2 = Vector2;
+exports.Vector3 = Vector3;
+exports.Box3 = Box3;
+exports.Quaternion = Quaternion;
+exports.Euler = Euler;
+exports.Plane = Plane;
+exports.Color = Color;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+//# sourceMappingURL=ngl.dev.js.map
