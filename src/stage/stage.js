@@ -14,17 +14,18 @@ import { defaults, getFileInfo } from '../utils.js'
 import { degToRad, clamp, pclamp } from '../math/math-utils.js'
 import Counter from '../utils/counter.js'
 import Viewer from '../viewer/viewer.js'
-import MouseObserver from './mouse-observer.js'
+// AFRAME VR
+// import MouseObserver from './mouse-observer.js'
 
-import TrackballControls from '../controls/trackball-controls.js'
-import PickingControls from '../controls/picking-controls.js'
-import ViewerControls from '../controls/viewer-controls.js'
+// import TrackballControls from '../controls/trackball-controls.js'
+// import PickingControls from '../controls/picking-controls.js'
+// import ViewerControls from '../controls/viewer-controls.js'
 import AnimationControls from '../controls/animation-controls.js'
-import MouseControls from '../controls/mouse-controls.js'
+// import MouseControls from '../controls/mouse-controls.js'
 import KeyControls from '../controls/key-controls.js'
 
-import PickingBehavior from './picking-behavior.js'
-import MouseBehavior from './mouse-behavior.js'
+// import PickingBehavior from './picking-behavior.js'
+// import MouseBehavior from './mouse-behavior.js'
 import AnimationBehavior from './animation-behavior.js'
 import KeyBehavior from './key-behavior.js'
 
@@ -99,7 +100,8 @@ class Stage {
    * @param {String|Element} [idOrElement] - dom id or element
    * @param {StageParameters} params - parameters object
    */
-  constructor (idOrElement, params) {
+   // AFRAME VR
+  constructor (idOrElement, aframeScene, params) {
     /**
      * Events emitted by the stage
      * @type {StageSignals}
@@ -127,8 +129,8 @@ class Stage {
     this.defaultFileParams = {}
 
     //
-
-    this.viewer = new Viewer(idOrElement)
+    // AFRAME VR
+    this.viewer = new Viewer(idOrElement, aframeScene)
     if (!this.viewer.renderer) return
 
     /**
@@ -146,19 +148,22 @@ class Stage {
       padding: '8px',
       fontFamily: 'sans-serif'
     })
-    document.body.appendChild(this.tooltip)
+    // AFRAME VR
+    // document.body.appendChild(this.tooltip)
 
     /**
      * @type {MouseObserver}
      */
-    this.mouseObserver = new MouseObserver(this.viewer.renderer.domElement)
+    // AFRAME VR
+    // this.mouseObserver = new MouseObserver(this.viewer.renderer.domElement)
 
     /**
      * @type {ViewerControls}
      */
-    this.viewerControls = new ViewerControls(this)
-    this.trackballControls = new TrackballControls(this)
-    this.pickingControls = new PickingControls(this)
+    // AFRAME VR
+    // this.viewerControls = new ViewerControls(this)
+    // this.trackballControls = new TrackballControls(this)
+    // this.pickingControls = new PickingControls(this)
     /**
      * @type {AnimationControls}
      */
@@ -166,14 +171,16 @@ class Stage {
     /**
      * @type {MouseControls}
      */
-    this.mouseControls = new MouseControls(this)
+    // AFRAME VR
+    // this.mouseControls = new MouseControls(this)
     /**
      * @type {KeyControls}
      */
     this.keyControls = new KeyControls(this)
 
-    this.pickingBehavior = new PickingBehavior(this)
-    this.mouseBehavior = new MouseBehavior(this)
+    // AFRAME VR
+    // this.pickingBehavior = new PickingBehavior(this)
+    // this.mouseBehavior = new MouseBehavior(this)
     this.animationBehavior = new AnimationBehavior(this)
     this.keyBehavior = new KeyBehavior(this)
 
@@ -188,8 +195,9 @@ class Stage {
     this.rockAnimation = this.animationControls.rock([ 0, 1, 0 ], 0.005)
     this.rockAnimation.pause(true)
 
+    // AFRAME VR
     const p = Object.assign({
-      impostor: true,
+      impostor: false,
       quality: 'medium',
       workerDefault: true,
       sampleLevel: 0,
@@ -200,7 +208,7 @@ class Stage {
       clipNear: 0,
       clipFar: 100,
       clipDist: 10,
-      fogNear: 50,
+      fogNear: 0,
       fogFar: 100,
       cameraFov: 40,
       cameraType: 'perspective',
@@ -209,7 +217,7 @@ class Stage {
       ambientColor: 0xdddddd,
       ambientIntensity: 0.2,
       hoverTimeout: 0,
-      tooltip: true,
+      tooltip: false,
       mousePreset: 'default'
     }, params)
 
@@ -284,7 +292,8 @@ class Stage {
 
     this.setParameters(p)  // must come after the viewer has been instantiated
 
-    this.viewer.animate()
+    // AFRAME VR
+    // this.viewer.animate()
   }
 
   /**
@@ -296,7 +305,8 @@ class Stage {
     const p = Object.assign({}, params)
     const tp = this.parameters
     const viewer = this.viewer
-    const controls = this.trackballControls
+    // AFRAME VR
+    // const controls = this.trackballControls
 
     for (let name in p) {
       if (p[ name ] === undefined) continue
@@ -311,11 +321,12 @@ class Stage {
     // apply parameters
     if (p.quality !== undefined) this.setQuality(p.quality)
     if (p.impostor !== undefined) this.setImpostor(p.impostor)
-    if (p.rotateSpeed !== undefined) controls.rotateSpeed = p.rotateSpeed
-    if (p.zoomSpeed !== undefined) controls.zoomSpeed = p.zoomSpeed
-    if (p.panSpeed !== undefined) controls.panSpeed = p.panSpeed
-    if (p.mousePreset !== undefined) this.mouseControls.preset(p.mousePreset)
-    this.mouseObserver.setParameters({ hoverTimeout: p.hoverTimeout })
+    // AFRAME VR
+    // if (p.rotateSpeed !== undefined) controls.rotateSpeed = p.rotateSpeed
+    // if (p.zoomSpeed !== undefined) controls.zoomSpeed = p.zoomSpeed
+    // if (p.panSpeed !== undefined) controls.panSpeed = p.panSpeed
+    // if (p.mousePreset !== undefined) this.mouseControls.preset(p.mousePreset)
+    // this.mouseObserver.setParameters({ hoverTimeout: p.hoverTimeout })
     viewer.setClip(p.clipNear, p.clipFar, p.clipDist)
     viewer.setFog(undefined, p.fogNear, p.fogFar)
     viewer.setCamera(p.cameraType, p.cameraFov)

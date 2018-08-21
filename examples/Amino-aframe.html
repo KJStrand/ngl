@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Amino Acids in Aframe</title>
+	<meta name="author" content="Kaden Strand">
+	  
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    
+    <!-- Orbit Controls -->
+	<script src="https://unpkg.com/aframe-orbit-controls@1.0.0/dist/aframe-orbit-controls.min.js"></script>
+    
+    <!-- NGL for Aframe proof of concept -->
+    <script src="../build/js/ngl.dev.js"></script>
+	<script src="../build/js/Aframe_component.js"></script>
+
+  </head>
+	<body>
+	
+	<a href="http://bluepengu.in/" target="_blank"><img src="./pics/BluePenguinLogo.png" alt="Visit Blue Penguin" style="z-index:1000; position:absolute; width:150px; height:51.34px;margin-left:10px;margin-top:10px;"></a>
+      
+	
+	  <a-scene light="defaultLightsEnabled: true">
+
+	    <a-assets>
+          <img crossorigin="anonymous" id="blue_penguin_logo" src="./pics/BluePenguinLogo.png">
+          <img crossorigin="anonymous" id="Amino_info" src="./pics/Common-Amino-Acids.png">
+		</a-assets>
+      
+
+      <a-camera wasd-controls-enabled="false" id="camera" orbit-controls="target: 0 -0.3 -1.5; minDistance: 0.0; maxDistance: 180; initialPosition: 0 0 0; enableKeys: false; rotateSpeed: 0.2; panSpeed: 1; zoomSpeed: 1;"></a-camera>
+      
+      <a-entity position= "0 0.5 0" scale="0.8 0.8 0.8">
+
+          <a-image src="#Amino_info" width="2.480" height="1.754" position="0 1 -2.3" scale="1 1 1" material="opacity:1"></a-image>
+
+          <!-- Could be more efficiently styled using CSS or D3.js -->
+
+          <a-entity id="Top Row" position="0 1.35 -2" scale="0.03 0.03 0.03">
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/alanine.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glycine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/isoleucine.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/leucine.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/proline.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/valine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+          </a-entity>
+
+          <a-entity id="Second Row" position="0 0.962 -2" scale="0.03 0.03 0.03">
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/phenylalanine.pdb;color:element" position="-33.4590950730687 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/tryptophan.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/tyrosine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/aspartic-acid.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glutamic-acid.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/arginine.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/histidine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+          </a-entity>
+
+          <a-entity id="Third Row" position="0 0.6 -2" scale="0.03 0.03 0.03">
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/lysine.pdb;color:element" position="-33.4590950730687 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/serine.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/threonine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/cysteine.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/methionine.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/asparagine.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glutamine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+          </a-entity>
+        
+      </a-entity>
+      
+	  
+	  </a-scene>
+	
+	</body>
+</html>
+
+
+

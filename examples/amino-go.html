@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <title>Amino Acids for Oculus Go</title>
+	  <meta name="author" content="Kaden Strand">
+	  
+<!--     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script> -->
+    <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script>
+    
+    <!-- Orbit Controls -->
+	  <script src="https://unpkg.com/aframe-orbit-controls@1.0.0/dist/aframe-orbit-controls.min.js"></script>
+    
+    <!-- NGL for Aframe proof of concept -->
+    <script src="../build/js/ngl.dev.js"></script>
+	<script src="../build/js/Aframe_component.js"></script>
+    
+    <!-- Logging in VR -->
+    <script src="https://unpkg.com/aframe-log-component/dist/aframe-log-component.min.js"></script>
+    
+    <script>
+      AFRAME.registerComponent('control_movement', {
+
+        init: function () {
+          document.querySelector('a-scene').addEventListener('enter-vr', function () {
+            document.querySelector('a-camera').object3D.position.set(0,0,0);
+          });
+          
+          // Reload work around, Oculus Go controller stops responding after re-entering VR
+          // https://github.com/aframevr/aframe/issues/3390
+          document.querySelector('a-scene').addEventListener('exit-vr', function () {
+            window.location.reload(true);
+          });
+          
+          this.TRIGGER_EVENT = 'triggerdown'
+          this.UNTRIGGER_EVENT = 'triggerup'
+          
+          this.TRACKPAD_EVENT = 'trackpaddown'
+          this.UNTRACKPAD_EVENT = 'trackpadup'
+          
+          this.triggered = false
+          this.trackpad = false
+          
+          this.currentPlanePos = document.querySelector('#plane').getAttribute('position')
+          this.triggerStartPos = null
+          this.trackpadStartPos = null
+          
+          this.el.addEventListener(this.TRIGGER_EVENT, e => this.startTrigger(e))
+          this.el.addEventListener(this.UNTRIGGER_EVENT, e => this.endTrigger(e))
+          
+          this.el.addEventListener(this.TRACKPAD_EVENT, e => this.startTrackpad(e))
+          this.el.addEventListener(this.UNTRACKPAD_EVENT, e => this.endTrackpad(e))
+          
+        },
+        
+        startTrigger: function (evt) {
+          this.triggered = true;
+          this.triggerStartPos = this.el.getAttribute('position')
+          this.triggerStartPos_x = this.triggerStartPos.x
+          this.triggerStartPos_y = this.triggerStartPos.y
+          // AFRAME.log('Start Trigger Called at position: ' + this.triggerStartPos_y);
+                                                      
+        },
+        
+        endTrigger: function (evt) {
+          // AFRAME.log('End Trigger Called...');
+          this.triggered = false;
+        },
+        
+        startTrackpad: function (evt) {
+          this.trackpad = true;
+          this.trackpadStartPos = this.el.getAttribute('position')
+          this.trackpadStartPos_z = this.trackpadStartPos.z
+          // AFRAME.log('Start Trigger Called at position: ' + this.trackpadStartPos_z);
+                                                      
+        },
+        
+        endTrackpad: function (evt) {
+          // AFRAME.log('End Trackpad Called...');
+          this.trackpad = false;
+        },
+        
+        tick: function () {
+          
+          if (this.triggered || this.trackpad){
+            var plane = document.querySelector('#plane');
+            var currentPosPlane = plane.getAttribute('position');
+            var controller = document.querySelector('#controller');
+            var currentPosController = controller.getAttribute('position');
+          }
+          
+          if (this.triggered){
+            // AFRAME.log('Holding trigger...');
+            var triggerPosDiff_x = (currentPosController.x - this.triggerStartPos_x)*1
+            var triggerPosDiff_y = (currentPosController.y - this.triggerStartPos_y)*1
+            
+            plane.object3D.position.x += triggerPosDiff_x
+            plane.object3D.position.y += triggerPosDiff_y
+            this.triggerStartPos_x = currentPosController.x
+            this.triggerStartPos_y = currentPosController.y
+          }
+          
+          if (this.trackpad){
+            // AFRAME.log('Holding trackpad...');
+            var trackpadPosDiff_z = (currentPosController.z - this.trackpadStartPos_z)*1
+            plane.object3D.position.z += trackpadPosDiff_z
+            this.trackpadStartPos_z = currentPosController.z
+            
+          }
+          
+        }
+      });
+
+    
+    </script>
+
+  </head>
+	<body>
+    <a href="http://bluepengu.in/" target="_blank"><img src="./pics/BluePenguinLogo.png" alt="Visit Blue Penguin" style="z-index:1000; position:absolute; width:150px; height:51.34px;margin-left:10px;margin-top:10px;"></a>
+      
+    <a-scene antialias="true" light="defaultLightsEnabled: true">  
+	    <a-assets>
+        <img crossorigin="anonymous" id="Amino_info" src="./pics/Common-Amino-Acids.png">
+        <img crossorigin="anonymous" id="go_xy" src="./pics/Go_controller_xy_new.png">
+        <img crossorigin="anonymous" id="go_z" src="./pics/Go_controller_z_new.png">
+		  </a-assets>
+      
+<!--       <a-log position="-1.5242741409422786 1.9316249633078328 -0.1876200110204509" rotation="0 90 0"></a-log> -->
+      <a-entity position="0 1.7 -0.1">
+        <a-entity control_movement id="controller" oculus-go-controls daydream-controls></a-entity>
+      </a-entity>
+
+      <a-camera wasd-controls-enabled="false" id="camera" orbit-controls="target: 0 -0.3 -1.5; minDistance: 0.0; maxDistance: 180; initialPosition: 0 0 0; enableKeys: false; rotateSpeed: 0.2; panSpeed: 1; zoomSpeed: 1;"></a-camera>
+      
+      <a-entity id="plane" position= "0 0.5 -1.5" scale="0.8 0.8 0.8">
+          <a-image src="#Amino_info" width="2.480" height="1.754" position="0 1 -0.3" scale="" material="color:#d0d0d0" geometry=""></a-image>
+          <a-image src="#go_xy" width="0.963" height="0.663" position="-0.5 2.25 -0.05" rotation="30 0 0"></a-image>
+          <a-image src="#go_z" width="0.963" height="0.695" position="0.5 2.25 -0.05" rotation="30 0 0"></a-image>
+        
+        
+
+          <!-- Could be more efficiently styled using CSS or D3.js -->
+          <a-entity id="Top Row" position="0 1.35 0" scale="0.03 0.03 0.03">
+            <a-entity ngl-mol="mol_entry:./pdb_files/alanine.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glycine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/isoleucine.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/leucine.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/proline.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/valine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+          </a-entity>
+
+          <a-entity id="Second Row" position="0 0.962 0" scale="0.03 0.03 0.03">
+            <a-entity ngl-mol="mol_entry:./pdb_files/phenylalanine.pdb;color:element" position="-33.4590950730687 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/tryptophan.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/tyrosine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/aspartic-acid.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glutamic-acid.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/arginine.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/histidine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+          </a-entity>
+
+          <a-entity id="Third Row" position="0 0.6 0" scale="0.03 0.03 0.03">
+            <a-entity ngl-mol="mol_entry:./pdb_files/lysine.pdb;color:element" position="-33.4590950730687 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/serine.pdb;color:element" position="-22.587279205650038 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/threonine.pdb;color:element" position="-10.913805152132115 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/cysteine.pdb;color:element" position="-0.65 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/methionine.pdb;color:element" position="11.383110668797766 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/asparagine.pdb;color:element" position="22.727746595179084 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+
+            <a-entity ngl-mol="mol_entry:./pdb_files/glutamine.pdb;color:element" position="34.59297122306282 0 0" rotation="">
+              <a-animation attribute="rotation" dur="30000" fill="none" easing="linear" to="0 360 0" repeat="indefinite"></a-animation></a-entity>
+          </a-entity>
+      </a-entity>
+	  </a-scene>
+	
+	</body>
+</html>
+
+
+

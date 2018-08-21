@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en>">
+  <head>
+	  <title>Aframe-NGL Proof of Concept Sample</title>
+	  <meta name="author" content="Kaden Strand">
+	  
+	  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+	  
+	  <!-- Orbit Controls -->
+	  <script src="https://unpkg.com/aframe-orbit-controls@1.0.0/dist/aframe-orbit-controls.min.js"></script> 
+	  
+	  <!-- NGL for Aframe proof of concept -->
+      <script src="../build/js/ngl.dev.js"></script>
+	  <script src="../build/js/Aframe_component.js"></script>
+
+  </head>	
+  <body>
+  
+	  <a href="http://bluepengu.in/" target="_blank"><img src="./pics/BluePenguinLogo.png" alt="Visit Blue Penguin" style="z-index:1000; position:absolute; width:150px; height:51.34px;margin-left:10px;margin-top:10px;"></a>
+      
+	  <a-scene light="defaultLightsEnabled: true">
+	  
+		<a-camera wasd-controls-enabled="false" id="camera" orbit-controls="target: 0 -0.3 -1.5; minDistance: 0.0; maxDistance: 180; initialPosition: 0 0 0; enableKeys: false; rotateSpeed: 0.2; panSpeed: 1; zoomSpeed: 1;"></a-camera>
+		
+		<!-- HA Sample -->
+		<a-entity ngl-mol="mol_entry:rcsb://1RUZ.mmtf; representation:ball+stick; color:hydrophobicity" position="0.3 1.5 -1.5" rotation="-180 -40 -40" scale="0.003 0.003 0.003"></a-entity>
+		
+		<!-- Antibody Sample -->
+		<a-entity ngl-mol="mol_entry:rcsb://1Igt.mmtf; representation:default; color:chainname" position="0 1.4 -1.5" rotation="0 -40 0" scale="0.003 0.003 0.003"></a-entity>
+		
+		<!-- RNA Sample --> 
+		<a-entity ngl-mol="mol_entry:rcsb://4TNA; representation:line; color:element" position="-0.5 1.3 -1.5" rotation="0 -60 40" scale="0.003 0.003 0.003"></a-entity>
+        <a-entity ngl-mol="mol_entry:rcsb://4TNA; representation:cartoon; color:Atomindex" position="-0.5 1.3 -1.5" rotation="0 -60 40" scale="0.003 0.003 0.003"></a-entity>
+	  
+	  </a-scene>
+	
+	</body>
+</html>

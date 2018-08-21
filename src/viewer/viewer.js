@@ -5,9 +5,11 @@
  */
 
 import {
-  PerspectiveCamera, OrthographicCamera,
+  // PerspectiveCamera, // AFRAME VR
+  OrthographicCamera,
   Box3, Vector3, Matrix4, Color,
-  WebGLRenderer, WebGLRenderTarget,
+  // WebGLRenderer, // AFRAME VR
+  WebGLRenderTarget,
   NearestFilter, LinearFilter, AdditiveBlending,
   RGBAFormat, FloatType,
   // HalfFloatType,
@@ -15,7 +17,8 @@ import {
   ShaderMaterial,
   PlaneGeometry,
   Scene, Mesh, Group,
-  Fog, SpotLight, AmbientLight,
+  Fog,
+  // SpotLight, AmbientLight, // AFRAME VR
   BufferGeometry, BufferAttribute,
   LineSegments
 } from '../../lib/three.es6.js'
@@ -127,7 +130,8 @@ function onBeforeRender (renderer, scene, camera, geometry, material/*, group */
  * @class
  * @param {String|Element} [idOrElement] - dom id or element
  */
-function Viewer (idOrElement) {
+ // AFRAME VR
+function Viewer (idOrElement, aframeScene) {
   const signals = {
     ticked: new Signal()
   }
@@ -163,7 +167,7 @@ function Viewer (idOrElement) {
   let perspectiveCamera, orthographicCamera, camera
   initCamera()
 
-  let scene, pointLight, ambientLight
+  let scene // AFRAME VR, pointLight, ambientLight
   let rotationGroup, translationGroup, modelGroup, pickingGroup, backgroundGroup, helperGroup
   initScene()
 
@@ -232,11 +236,13 @@ function Viewer (idOrElement) {
   function initCamera () {
     var lookAt = new Vector3(0, 0, 0)
 
-    perspectiveCamera = new PerspectiveCamera(
-      parameters.cameraFov, width / height
-    )
-    perspectiveCamera.position.z = parameters.cameraZ
-    perspectiveCamera.lookAt(lookAt)
+    // AFRAME VR
+    // perspectiveCamera = new PerspectiveCamera(
+      // parameters.cameraFov, width / height
+    // )
+    // perspectiveCamera.position.z = parameters.cameraZ
+    // perspectiveCamera.lookAt(lookAt)
+    perspectiveCamera = document.querySelector('a-camera').getObject3D('camera')
 
     orthographicCamera = new OrthographicCamera(
       width / -2, width / 2, height / 2, height / -2
@@ -249,24 +255,29 @@ function Viewer (idOrElement) {
     } else {  // parameters.cameraType === "perspective"
       camera = perspectiveCamera
     }
-    camera.updateProjectionMatrix()
+    // AFRAME VR
+    // camera.updateProjectionMatrix()
   }
 
   function initRenderer () {
     const dpr = window.devicePixelRatio
 
     try {
-      renderer = new WebGLRenderer({
-        preserveDrawingBuffer: true,
-        alpha: true,
-        antialias: true
-      })
+      // renderer = new WebGLRenderer({
+        // preserveDrawingBuffer: true,
+        // alpha: true,
+        // antialias: true
+      // })
+      // AFRAME VR
+      renderer = document.querySelector('a-scene').renderer
+      console.log('Using Aframe Renderer: ' + renderer)
     } catch (e) {
       container.innerHTML = WebglErrorMessage
       return false
     }
-    renderer.setPixelRatio(dpr)
-    renderer.setSize(width, height)
+    // AFRAME VR
+    // renderer.setPixelRatio(dpr)
+    // renderer.setSize(width, height)
     renderer.autoClear = false
     renderer.sortObjects = true
 
@@ -367,11 +378,15 @@ function Viewer (idOrElement) {
 
   function initScene () {
     if (!scene) {
-      scene = new Scene()
+      // scene = new Scene()
+      // AFRAME VR
+      scene = aframeScene
     }
 
     rotationGroup = new Group()
     rotationGroup.name = 'rotationGroup'
+    // Adjust scale for AFRAME VR
+    // rotationGroup.scale.set(0.025, 0.025, 0.025)
     scene.add(rotationGroup)
 
     translationGroup = new Group()
@@ -400,15 +415,16 @@ function Viewer (idOrElement) {
 
         // light
 
-    pointLight = new SpotLight(
-      parameters.lightColor, parameters.lightIntensity
-    )
-    scene.add(pointLight)
+    // AFRAME VR
+    // pointLight = new SpotLight(
+      // parameters.lightColor, parameters.lightIntensity
+    // )
+    // scene.add(pointLight)
 
-    ambientLight = new AmbientLight(
-      parameters.ambientLight, parameters.ambientIntensity
-    )
-    scene.add(ambientLight)
+    // ambientLight = new AmbientLight(
+      // parameters.ambientLight, parameters.ambientIntensity
+    // )
+    // scene.add(ambientLight)
   }
 
   function initHelper () {
@@ -657,7 +673,8 @@ function Viewer (idOrElement) {
     if (ambientColor !== undefined) p.ambientColor.set(ambientColor)
     if (ambientIntensity !== undefined) p.ambientIntensity = ambientIntensity
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setFog (color, near, far) {
@@ -667,7 +684,8 @@ function Viewer (idOrElement) {
     if (near !== undefined) p.fogNear = near
     if (far !== undefined) p.fogFar = far
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setBackground (color) {
@@ -679,7 +697,8 @@ function Viewer (idOrElement) {
     renderer.setClearColor(p.backgroundColor, 0)
     renderer.domElement.style.backgroundColor = p.backgroundColor.getStyle()
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setSampling (level) {
@@ -688,7 +707,8 @@ function Viewer (idOrElement) {
       sampleLevel = level
     }
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setCamera (type, fov) {
@@ -715,7 +735,8 @@ function Viewer (idOrElement) {
     perspectiveCamera.fov = p.cameraFov
     camera.updateProjectionMatrix()
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setClip (near, far, dist) {
@@ -725,7 +746,8 @@ function Viewer (idOrElement) {
     if (far !== undefined) p.clipFar = far
     if (dist !== undefined) p.clipDist = dist
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function setSize (_width, _height) {
@@ -751,7 +773,8 @@ function Viewer (idOrElement) {
     sampleTarget.setSize(dprWidth, dprHeight)
     holdTarget.setSize(dprWidth, dprHeight)
 
-    requestRender()
+    // AFRAME VR
+    // requestRender()
   }
 
   function handleResize () {
@@ -899,7 +922,8 @@ function Viewer (idOrElement) {
     // console.log( "cDist", cDist )
     if (!cDist) {
       // recover from a broken (NaN) camera position
-      camera.position.set(0, 0, p.cameraZ)
+      // AFRAME VR
+      // camera.position.set(0, 0, p.cameraZ)
       cDist = Math.abs(p.cameraZ)
     }
 
@@ -911,30 +935,32 @@ function Viewer (idOrElement) {
       bRadius = 50
     }
 
-    var nearFactor = (50 - p.clipNear) / 50
-    var farFactor = -(50 - p.clipFar) / 50
-    camera.near = cDist - (bRadius * nearFactor)
-    camera.far = cDist + (bRadius * farFactor)
+    // AFRAME VR
+    // var nearFactor = (50 - p.clipNear) / 50
+    // var farFactor = -(50 - p.clipFar) / 50
+    // AFRAME VR
+    // camera.near = cDist - (bRadius * nearFactor)
+    // camera.far = cDist + (bRadius * farFactor)
 
-    // fog
+    // // fog
 
-    var fogNearFactor = (50 - p.fogNear) / 50
-    var fogFarFactor = -(50 - p.fogFar) / 50
-    var fog = scene.fog
-    fog.color.set(p.fogColor)
-    fog.near = cDist - (bRadius * fogNearFactor)
-    fog.far = cDist + (bRadius * fogFarFactor)
+    // var fogNearFactor = (50 - p.fogNear) / 50
+    // var fogFarFactor = -(50 - p.fogFar) / 50
+    // var fog = scene.fog
+    // fog.color.set(p.fogColor)
+    // fog.near = cDist - (bRadius * fogNearFactor)
+    // fog.far = cDist + (bRadius * fogFarFactor)
 
-    if (camera.type === 'PerspectiveCamera') {
-      camera.near = Math.max(0.1, p.clipDist, camera.near)
-      camera.far = Math.max(1, camera.far)
-      fog.near = Math.max(0.1, fog.near)
-      fog.far = Math.max(1, fog.far)
-    } else if (camera.type === 'OrthographicCamera') {
-      if (p.clipNear === 0 && p.clipDist > 0 && cDist + camera.zoom > 2 * -p.clipDist) {
-        camera.near += camera.zoom + p.clipDist
-      }
-    }
+    // if (camera.type === 'PerspectiveCamera') {
+      // camera.near = Math.max(0.1, p.clipDist, camera.near)
+      // camera.far = Math.max(1, camera.far)
+      // fog.near = Math.max(0.1, fog.near)
+      // fog.far = Math.max(1, fog.far)
+    // } else if (camera.type === 'OrthographicCamera') {
+      // if (p.clipNear === 0 && p.clipDist > 0 && cDist + camera.zoom > 2 * -p.clipDist) {
+        // camera.near += camera.zoom + p.clipDist
+      // }
+    // }
   }
 
   function __updateCamera () {
@@ -942,6 +968,9 @@ function Viewer (idOrElement) {
     camera.updateMatrixWorld(true)
     camera.matrixWorldInverse.getInverse(camera.matrixWorld)
     camera.updateProjectionMatrix()
+    // AFRAME VR
+    // camera = document.querySelector('a-camera').getObject3D('camera');
+    // renderer = document.querySelector('a-scene').getObject3D('renderer');
 
     updateMaterialUniforms(scene, camera, renderer, cDist, bRadius)
     sortProjectedPosition(scene, camera)
@@ -954,18 +983,19 @@ function Viewer (idOrElement) {
     helperGroup.visible = helper
   }
 
-  function __updateLights () {
-    // distVector.copy( camera.position ).sub( controls.target )
-    //   .setLength( boundingBoxLength * 100 );
-    distVector.copy(camera.position).setLength(boundingBoxLength * 100)
+  // AFRAME VR
+  // function __updateLights () {
+    // // distVector.copy( camera.position ).sub( controls.target )
+    // //   .setLength( boundingBoxLength * 100 );
+    // distVector.copy(camera.position).setLength(boundingBoxLength * 100)
 
-    pointLight.position.copy(camera.position).add(distVector)
-    pointLight.color.set(parameters.lightColor)
-    pointLight.intensity = parameters.lightIntensity
+    // pointLight.position.copy(camera.position).add(distVector)
+    // pointLight.color.set(parameters.lightColor)
+    // pointLight.intensity = parameters.lightIntensity
 
-    ambientLight.color.set(parameters.ambientColor)
-    ambientLight.intensity = parameters.ambientIntensity
-  }
+    // ambientLight.color.set(parameters.ambientColor)
+    // ambientLight.intensity = parameters.ambientIntensity
+  // }
 
   function __renderPickingGroup () {
     renderer.clearTarget(pickingTarget)
@@ -1066,7 +1096,8 @@ function Viewer (idOrElement) {
 
     __updateClipping()
     __updateCamera()
-    __updateLights()
+    // AFRAME VR
+    // __updateLights()
 
     // render
 
