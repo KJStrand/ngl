@@ -1,4 +1,10 @@
 
+AFRAME-NGL
+----------
+View [AFRAME-NGL Branch Changes](https://github.com/KJStrand/ngl/blob/AFRAME-NGL/AFRAME_COMPONENT.md)
+
+
+
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/arose/ngl/blob/master/LICENSE)
 [![Changelog](https://img.shields.io/badge/changelog--lightgrey.svg?style=flat)](https://github.com/arose/ngl/blob/master/CHANGELOG.md)
 [![npm version](https://badge.fury.io/js/ngl.svg)](https://badge.fury.io/js/ngl)
