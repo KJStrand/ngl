@@ -2,7 +2,7 @@
 A-FRAME + NGL
 ================
 
-This branch is highly experimental. The purpose of these changes is to show proof-of-concept for how the full NGL viewer could be accessed as an [A-Frame](https://aframe.io/docs/0.8.0/introduction/#what-is-a-frame) component.
+The purpose of this experimental branch is to show proof-of-concept for how the full NGL viewer could be accessed as an [A-Frame](https://aframe.io/docs/0.8.0/introduction/#what-is-a-frame) component.
 
 The composable architecture of A-Frame would allow for molecular structures to be easily mixed with other components in a shared Three.js scene. This design provides much greater flexibility and extensibility to meet custom use cases, without requiring the NGL team to support additional features beyond the scope of the roadmap.
 
