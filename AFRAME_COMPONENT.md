@@ -14,7 +14,7 @@ NGL visualizations could be included in A-Frame scenes, enabling these and other
 - Consistent VR/AR interactions as controllers, gestures, and speech inputs evolve.
 - Networking components for cross-device multi-user collaboration, e.g. [Mozilla Hubs](https://blog.mozvr.com/introducing-hubs-a-new-way-to-get-together-online/)
 - Powerful animation system components, simplifying visual explanations 
-- Virtual video capture and export, as well as recording of full 3D motion capture with [Aframe Motion Capture](https://github.com/dmarcos/aframe-motion-capture-components)
+- Virtual video capture and export, as well as recording of full 3D motion capture with [A-Frame Motion Capture](https://github.com/dmarcos/aframe-motion-capture-components)
 
 Using the "ngl-mol" Component
 ================
