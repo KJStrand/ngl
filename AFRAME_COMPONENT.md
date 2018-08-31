@@ -37,6 +37,7 @@ The simplest usage is a single line of HTML, attaching 'ngl-mol' to an \<a-entit
 
 <body>
   <a-scene>
+    <a-camera></a-camera>
     <a-entity ngl-mol = "mol_entry: rcsb://1Igt.mmtf;"></a-entity>
   </a-scene>
 <body>
